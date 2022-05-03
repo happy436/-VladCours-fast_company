@@ -6,14 +6,20 @@ import GroupList from "./groupList";
 import API from "../api";
 import _ from "lodash";
 import UsersTable from "./usersTable";
+import SearchInput from "./searchInput";
 
 const Users = () => {
     const [users, setUsers] = useState();
+    const [searchData, setSearchData] = useState();
     useEffect(() => {
         API.users.fetchAll().then((data) => {
             setUsers(data);
         });
     }, []);
+    const handeChange = ({ target }) => {
+        setSearchData(target.value);
+        setSelectedProf();
+    };
     const handleDelete = (id) => {
         setUsers((prevState) => prevState.filter((user) => user._id !== id));
     };
@@ -54,31 +60,44 @@ const Users = () => {
     // фильтрация
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setSearchData("");
     };
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
 
     if (users) {
-        const filteredUsers = selectedProf
-            ? users.filter((user) => _.isEqual(user.profession, selectedProf))
-            : users;
-        const count = filteredUsers.length;
+        const filteredUsers = () => {
+            if (selectedProf) {
+                return users.filter((user) => _.isEqual(user.profession, selectedProf));
+            } else if (searchData) {
+                return users.filter(user => user.name.includes(searchData));
+            } else {
+                return users;
+            }
+        };
+        const count = filteredUsers().length;
 
-        const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+        const sortedUsers = _.orderBy(filteredUsers(), [sortBy.path], [sortBy.order]);
 
         // пагинация
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
         const renderTable = (number) =>
             number !== 0
-                ? (<UsersTable
-                    users={userCrop}
-                    selectedSort={sortBy}
-                    onToggleBookMark={handleToggleBookMark}
-                    onSort={handleSort}
-                    onDelete={handleDelete}
-                />)
+                ? (<>
+                    <SearchInput
+                        value={searchData}
+                        onChange={handeChange}
+                    />
+                    <UsersTable
+                        users={userCrop}
+                        selectedSort={sortBy}
+                        onToggleBookMark={handleToggleBookMark}
+                        onSort={handleSort}
+                        onDelete={handleDelete}
+                    />
+                </>)
                 : ("");
 
         const clearFilter = () => {
