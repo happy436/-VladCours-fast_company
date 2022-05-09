@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TableHeader from "./table/tableHeader";
-import TableBody from "./table/tableBody";
-import QualitiesList from "./qualitiesList";
-import Table from "./table/table";
-import Bookmark from "./bookmark";
+import Table, { TableHeader, TableBody } from "../common/table";
+import QualitiesList from "../ui/qualities/qualitiesList";
+import Bookmark from "../common/bookmark";
 import { Link } from "react-router-dom";
 
-export default function UsersTable({
+function UsersTable({
     users,
     selectedSort,
     onToggleBookMark,
@@ -70,3 +68,5 @@ UsersTable.propTypes = {
     onToggleBookMark: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
 };
+
+export default UsersTable;

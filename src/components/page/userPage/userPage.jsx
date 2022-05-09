@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
-import QualitiesList from "../components/qualitiesList";
+import QualitiesList from "../../ui/qualities/qualitiesList";
 import { useHistory } from "react-router-dom";
+import API from "../../../api";
 import PropTypes from "prop-types";
-import API from "../api";
 
-const User = ({ id }) => {
+const UserPage = ({ userId }) => {
     const [user, setUser] = useState();
     const history = useHistory();
     const handleAllUsers = () => {
         history.push("/users");
     };
     useEffect(() => {
-        API.users.getUserById(id).then(data => setUser(data));
+        API.users.getUserById(userId).then(data => setUser(data));
     }, []);
-    console.log(user);
     const renderUser = () => {
         if (user) {
             return (
@@ -37,11 +36,12 @@ const User = ({ id }) => {
             </span>
             <button className="btn btn-primary w-10 h-10 m-2" onClick={() => handleAllUsers()}>Все пользователи</button>
         </div>
+
     );
 };
 
-User.propTypes = {
-    id: PropTypes.string.isRequired
+UserPage.propTypes = {
+    userId: PropTypes.string.isRequired
 };
 
-export default User;
+export default UserPage;
