@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import EditForm from "./components/ui/editForm";
 import NavBar from "./components/ui/navBar";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
@@ -11,6 +12,7 @@ const App = () => {
             <NavBar />
             <div className="d-flex">
                 <Switch>
+                    <Route path="/users/:UserId?/edit" component={EditForm} />
                     <Route path="/users/:UserId?" component={Users} />
                     <Route path="/login/:type?" component={Login} />
                     <Route path="/" exact component={Main} />
