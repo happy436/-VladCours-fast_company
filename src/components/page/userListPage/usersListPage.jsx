@@ -10,7 +10,7 @@ import SearchInput from "../../ui/searchInput";
 
 const Users = () => {
     const [users, setUsers] = useState();
-    const [searchData, setSearchData] = useState();
+    const [searchData, setSearchData] = useState("");
     const [professions, setProfession] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProf, setSelectedProf] = useState();

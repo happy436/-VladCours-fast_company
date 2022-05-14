@@ -8,12 +8,13 @@ function SearchInput({ onChange, value }) {
             name="search"
             onChange={onChange}
             value={value}
+            placeholder={"Поиск по имени"}
         ></input>
     );
 };
 
 SearchInput.propTypes = {
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     value: PropTypes.string
 };
 
