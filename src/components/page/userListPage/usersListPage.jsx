@@ -70,27 +70,29 @@ const Users = () => {
     if (users) {
         const filteredUsers = () => {
             if (selectedProf) {
-                return users.filter((user) => _.isEqual(user.profession, selectedProf));
+                return users.filter((user) =>
+                    _.isEqual(user.profession, selectedProf)
+                );
             } else if (searchData) {
-                return users.filter(user => user.name.includes(searchData));
+                return users.filter((user) => user.name.toLowerCase().includes(searchData.toLowerCase()));
             } else {
                 return users;
             }
         };
         const count = filteredUsers().length;
 
-        const sortedUsers = _.orderBy(filteredUsers(), [sortBy.path], [sortBy.order]);
+        const sortedUsers = _.orderBy(
+            filteredUsers(),
+            [sortBy.path],
+            [sortBy.order]
+        );
 
         // пагинация
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
         const renderTable = (number) =>
-            number !== 0
-                ? (<>
-                    <SearchInput
-                        value={searchData}
-                        onChange={handeChange}
-                    />
+            number !== 0 ? (
+                <>
                     <UsersTable
                         users={userCrop}
                         selectedSort={sortBy}
@@ -98,8 +100,10 @@ const Users = () => {
                         onSort={handleSort}
                         onDelete={handleDelete}
                     />
-                </>)
-                : ("");
+                </>
+            ) : (
+                ""
+            );
 
         const clearFilter = () => {
             setSelectedProf();
@@ -124,6 +128,12 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus usersCount={count} />
+                    {users.length !== 0
+                        ? (<SearchInput
+                            value={searchData}
+                            onChange={handeChange}
+                        />)
+                        : null}
                     {renderTable(users.length)}
                     <div className="d-flex justify-content-center">
                         <Pagination
@@ -136,7 +146,7 @@ const Users = () => {
                 </div>
             </div>
         );
-    };
+    }
     return "loading";
 };
 
