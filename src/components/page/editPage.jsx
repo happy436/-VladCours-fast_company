@@ -7,7 +7,7 @@ import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 import * as yup from "yup";
 
-function EditForm() {
+function EditPage() {
     const validateSchema = yup.object().shape({
         email: yup
             .string()
@@ -42,7 +42,13 @@ function EditForm() {
             setProfession(data);
         });
         API.qualities.fetchAll().then((data) => {
-            setQualities(data);
+            setQualities(
+                Object.keys(data).map((key) => ({
+                    label: data[key].name,
+                    value: data[key]._id,
+                    color: data[key].color
+                }))
+            );
         });
         API.users.getById(params.UserId).then((fetchData) => {
             setFetchData(fetchData);
@@ -51,7 +57,11 @@ function EditForm() {
                 email: fetchData.email,
                 profession: fetchData.profession,
                 sex: fetchData.sex,
-                qualities: fetchData.qualities.map(item => ({ label: item.name, value: item._id, color: item.color }))
+                qualities: fetchData.qualities.map((item) => ({
+                    label: item.name,
+                    value: item._id,
+                    color: item.color
+                }))
             }));
         });
     }, []);
@@ -66,9 +76,13 @@ function EditForm() {
             sex: data.sex,
             _id: fetchData._id,
             profession: data.profession,
-            qualities: data.qualities.map((item) => ({ _id: item.value, name: item.label, color: item.color }))
+            qualities: data.qualities.map((item) => ({
+                _id: item.value,
+                name: item.label,
+                color: item.color
+            }))
         };
-        history.push(`/users/${params.UserId}`);
+        history.goBack();
         API.users.update(params.UserId, updateData);
     };
     const validate = () => {
@@ -164,4 +178,4 @@ function EditForm() {
     return render();
 }
 
-export default EditForm;
+export default EditPage;
