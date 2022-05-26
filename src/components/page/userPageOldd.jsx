@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import QualitiesList from "../../ui/qualities/qualitiesList";
+import QualitiesList from "../ui/qualities/qualitiesList";
 import { useHistory } from "react-router-dom";
-import API from "../../../api";
+import API from "../../api";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
