@@ -15,7 +15,6 @@ function SelectField({
             name: target.name,
             value: { _id: target.value, name: target.selectedOptions[0].innerText }
         });
-        /* console.log({ target }); */
     };
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");

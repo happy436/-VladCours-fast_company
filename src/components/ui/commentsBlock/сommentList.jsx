@@ -4,7 +4,6 @@ import Comment from "./сomment";
 import PropTypes from "prop-types";
 
 function CommentList({ handleDeleteComment, comments }) {
-    console.log(comments);
     return (
         <Card>
             <h2>Comments</h2>
