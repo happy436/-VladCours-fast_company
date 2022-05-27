@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import Card from "../common/Card";
 import PropTypes from "prop-types";
 import API from "../../api";
-import QualitiesList from "../ui/qualities/qualitiesList";
-import CommentList from "../ui/comments/CommentList";
+import QualitiesList from "../ui/qualitiesList";
 import { useHistory } from "react-router-dom";
+import ProfileInfo from "../ui/profileInfo";
+import CommentBlock from "../ui/commentsBlock/block";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
@@ -42,65 +43,20 @@ const UserPage = ({ userId }) => {
             {user ? (
                 <div className="row gutters-sm">
                     <section className="col-md-4 mb-3">
-                        <Card>
-                            <button
-                                className="
-                                    position-absolute
-                                    top-0
-                                    end-0
-                                    btn btn-light btn-sm
-                                "
-                                onClick={handleRoutes}
-                            >
-                                <i className="bi bi-gear" />
-                            </button>
-                            <div
-                                className="
-                                d-flex
-                                flex-column
-                                align-items-center
-                                text-center
-                                position-relative
-                            "
-                            >
-                                <img
-                                    src={avatar}
-                                    className="rounded-circle shadow-1-strong me-3"
-                                    alt="avatar"
-                                    width="65"
-                                    height="65"
-                                />
-                                <div className="mt-3">
-                                    <h4>{user.name}</h4>
-                                    <p className="text-secondary mb-1">
-                                        Доктор
-                                    </p>
-                                    <span className="text-muted">
-                                        <i
-                                            className="
-                                            bi bi-caret-down-fill
-                                            text-primary
-                                        "
-                                            role="button"
-                                        ></i>
-                                        <i
-                                            className="
-                                            bi bi-caret-up
-                                            text-secondary
-                                        "
-                                            role="button"
-                                        ></i>
-                                        <span
-                                            className={`ms-2 ${rateColor(
-                                                user.rate
-                                            )}`}
-                                        >
-                                            {user.rate}
-                                        </span>
-                                    </span>
-                                </div>
-                            </div>
-                        </Card>
+                        <ProfileInfo
+                            data={
+                                {
+                                    avatar: avatar,
+                                    rate: user.rate,
+                                    name: user.name,
+                                    profession: {
+                                        name: user.profession.name,
+                                        _id: user.profession._id
+                                    }
+                                }}
+                            rateColor={rateColor}
+                            handleRoutes={handleRoutes}
+                        />
                         <Card name={"Qualities"}>
                             <QualitiesList qualities={user.qualities} />
                         </Card>
@@ -110,48 +66,9 @@ const UserPage = ({ userId }) => {
                             </h1>
                         </Card>
                     </section>
-                    <section className="col-md-8">
-                        <Card extraClassName="mb-2">
-                            <div>
-                                <h2>New comment</h2>
-                                <span className="mb-4">
-                                    <select
-                                        className="form-select"
-                                        name="userId"
-                                    >
-                                        <option disabled defaultValue={""}>
-                                            Выберите пользователя
-                                        </option>
-                                        {users ? users.map((item) => (
-                                            <option
-                                                key={item._id}
-                                                value={item._id}
-                                            >
-                                                {item.name}
-                                            </option>
-                                        )) : null}
-                                    </select>
-                                </span>
-                                <span className="mb-4">
-                                    <label
-                                        htmlFor="exampleFormControlTextarea1"
-                                        className="form-label"
-                                    >
-                                        Сообщение
-                                    </label>
-                                    <textarea
-                                        className="form-control"
-                                        id="exampleFormControlTextarea1"
-                                        rows="3"
-                                    ></textarea>
-                                </span>
-                                <button className="btn btn-primary mt-2">
-                                    Опубликовать
-                                </button>
-                            </div>
-                        </Card>
-                        <CommentList/>
-                    </section>
+                    <CommentBlock
+                        users={users}
+                    />
                 </div>
             ) : (
                 <h1>Loading...</h1>

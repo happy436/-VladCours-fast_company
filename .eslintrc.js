@@ -13,6 +13,7 @@ module.exports = {
     },
     plugins: ["react"],
     rules: {
+        "new-cap": ["error", { newIsCap: true }],
         "multiline-ternary": ["off"],
         indent: ["error", 4, { "SwitchCase": 1 }],
         semi: [2, "always"],
