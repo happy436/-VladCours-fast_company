@@ -3,24 +3,21 @@ import Pagination from "../../common/pagination";
 import SearchStatus from "../../ui/searchStatus";
 import { paginate } from "../../../utils/paginate";
 import GroupList from "../../common/groupList";
-import API from "../../../api";
 import _ from "lodash";
 import UsersTable from "../../ui/usersTable";
 import SearchInput from "../../ui/searchInput";
+import { useUser } from "../../../hooks/useUsers";
+import API from "../../../api";
 
 const Users = () => {
-    const [users, setUsers] = useState();
     const [searchData, setSearchData] = useState("");
     const [professions, setProfession] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
 
-    useEffect(() => {
-        API.users.fetchAll().then((data) => {
-            setUsers(data);
-        });
-    }, []);
+    const { users } = useUser();
+
     useEffect(() => {
         API.professions.fetchAll().then((data) => {
             setProfession(data);
@@ -32,11 +29,12 @@ const Users = () => {
         setSelectedProf();
     };
     const handleDelete = (id) => {
-        setUsers((prevState) => prevState.filter((user) => user._id !== id));
+        // setUsers((prevState) => prevState.filter((user) => user._id !== id));
+        console.log(id);
     };
     const handleToggleBookMark = (id) => {
-        const index = users.findIndex((user) => user._id === id);
-        setUsers((prevState) => {
+        /* const index = users.findIndex((user) => user._id === id); */
+        /* setUsers((prevState) => {
             return prevState.map((user, userIndex) => {
                 if (userIndex === index) {
                     return { ...user, bookmark: !user.bookmark };
@@ -44,7 +42,7 @@ const Users = () => {
                     return user;
                 }
             });
-        });
+        }); */
     };
 
     // сортировка

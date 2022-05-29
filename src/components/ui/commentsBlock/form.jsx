@@ -15,6 +15,7 @@ function CommentForm({ users, handleAddComment, pageId }) {
         if (input !== "".trim() && selectedUser !== "") {
             handleAddComment({ content: input.trim(), pageId: pageId, userId: selectedUser });
             setInput("");
+            setSelectedUser("");
         }
     };
     return (

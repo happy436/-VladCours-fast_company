@@ -4,6 +4,7 @@ import Table, { TableHeader, TableBody } from "../common/table";
 import QualitiesList from "../ui/qualitiesList";
 import Bookmark from "../common/bookmark";
 import { Link } from "react-router-dom";
+import Profession from "./profession";
 
 function UsersTable({
     users,
@@ -24,7 +25,7 @@ function UsersTable({
             component: user => <QualitiesList qualities={user.qualities}/>
         },
         professions: {
-            path: "profession.name",
+            component: user => <Profession id={user.profession}/>,
             name: "Профессия"
         },
         completedMeetings: {
