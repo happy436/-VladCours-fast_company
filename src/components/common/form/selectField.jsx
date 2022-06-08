@@ -13,7 +13,7 @@ function SelectField({
     const handleChange = ({ target }) => {
         onChange({
             name: target.name,
-            value: { _id: target.value, name: target.selectedOptions[0].innerText }
+            value: target.value
         });
     };
     const getInputClasses = () => {

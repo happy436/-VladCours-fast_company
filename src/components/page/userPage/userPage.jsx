@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Card from "../common/Card";
+import Card from "../../common/Card";
 import PropTypes from "prop-types";
-import API from "../../api";
-import QualitiesList from "../ui/qualitiesList";
+import API from "../../../api";
+import QualitiesList from "../../ui/qualitiesList";
 import { useHistory } from "react-router-dom";
-import ProfileInfo from "../ui/profileInfo";
-import CommentBlock from "../ui/commentsBlock/block";
+import ProfileInfo from "../../ui/profileInfo";
+import CommentBlock from "../../ui/commentsBlock/block";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();

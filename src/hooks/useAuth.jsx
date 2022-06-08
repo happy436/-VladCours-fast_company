@@ -15,8 +15,8 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
     const [currentUser, setUser] = useState({});
     const [error, setError] = useState(null);
-    async function singUp({ email, password, ...rest }) {
-        const URL = `https://identitytoolkit.googlepis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+    async function signUp({ email, password, ...rest }) {
+        const URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
             const { data } = await httpAuth.post(URL,
                 {
@@ -34,7 +34,6 @@ const AuthProvider = ({ children }) => {
                     ...rest
                 }
             );
-            console.log(data);
         } catch (error) {
             errorCather(error);
             const { code, message } = error.response.data.error;
@@ -67,7 +66,7 @@ const AuthProvider = ({ children }) => {
         setError(message);
     }
     return (
-        <AuthContext.Provider value={{ singUp, currentUser }}>
+        <AuthContext.Provider value={{ signUp, currentUser }}>
             {children}
         </AuthContext.Provider>
     );

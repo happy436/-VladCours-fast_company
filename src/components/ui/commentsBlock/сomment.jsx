@@ -1,45 +1,16 @@
-/* eslint-disable new-cap */
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import API from "../../../api";
+import { elapsedTimeCalculation } from "../../../utils/elapsedTime";
 
 function Comment({ handleDeleteComment, id, data }) {
     const [name, setName] = useState();
     const [time, setTime] = useState(new Date(Number(data.created_at)));
     useEffect(() => {
         API.users.getById(data.userId).then((data) => setName(data.name));
-        setTime(elapsedTimeCalculation());
+        setTime(elapsedTimeCalculation(time));
     }, []);
-    const ten = (date) => {
-        if (date < 10) {
-            return `0${date}`;
-        }
-    };
-    const elapsedTimeCalculation = () => {
-        const date = new Date();
-        const diff = date - time;
-        if (diff > 3.154e10) {
-            return `${ten(time.getDate())}.${ten(time.getMonth())}.${ten(
-                time.FullYear()
-            )}`;
-        } else if (diff > 2.628e9) {
-            return `${ten(time.getDate())} ${time.toLocaleString("en-EN", {
-                month: "short"
-            })}`;
-        } else if (diff > 8.64e7) {
-            return `${ten(time.getDate())} дней назад`;
-        } else if (diff > 3.6e6) {
-            return `${Math.floor(diff / 3.6e6)} часов назад`;
-        } else if (diff > 1.8e6) {
-            return `30 минут назад`;
-        } else if (diff > 60000 && diff < 1.8e6) {
-            return `${Math.floor(diff / 60000)} минут назад`;
-        } else if (diff > 1000) {
-            return `${Math.floor(diff / 1000)} секунд назад`;
-        } else {
-            return "сейчас";
-        }
-    };
+
     return (
         <>
             {name ? (
