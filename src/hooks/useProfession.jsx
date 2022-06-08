@@ -32,7 +32,8 @@ export const ProfessionProvider = ({ children }) => {
         }
     }, [error]);
     function errorCather(error) {
-        const { message } = error.response.data;
+        /* const { message } = error.response.data; */
+        const { message } = error;
         setError(message);
     }
     function getProfession(id) {

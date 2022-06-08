@@ -9,29 +9,33 @@ import Users from "./layouts/users";
 import "react-toastify/dist/ReactToastify.css";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualityProvider } from "./hooks/useQuality";
+import AuthProvider from "./hooks/useAuth";
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <NavBar />
-            <div className="d-flex">
-                <ProfessionProvider>
-                    <QualityProvider>
-                        <Switch>
-                            <Route
-                                path="/users/:UserId?/edit"
-                                component={EditPage}
-                            />
-                            <Route path="/users/:UserId?" component={Users} />
-                            <Route path="/login/:type?" component={Login} />
 
-                            <Route path="/" exact component={Main} />
-                            <Redirect to="/" />
-                        </Switch>
-                    </QualityProvider>
-                </ProfessionProvider>
-                <ToastContainer />
-            </div>
+        <BrowserRouter>
+            <AuthProvider>
+                <NavBar />
+                <div className="d-flex">
+                    <ProfessionProvider>
+                        <QualityProvider>
+                            <Switch>
+                                <Route
+                                    path="/users/:UserId?/edit"
+                                    component={EditPage}
+                                />
+                                <Route path="/users/:UserId?" component={Users} />
+                                <Route path="/login/:type?" component={Login} />
+
+                                <Route path="/" exact component={Main} />
+                                <Redirect to="/" />
+                            </Switch>
+                        </QualityProvider>
+                    </ProfessionProvider>
+                    <ToastContainer />
+                </div>
+            </AuthProvider>
         </BrowserRouter>
     );
 };

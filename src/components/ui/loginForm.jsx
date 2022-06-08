@@ -50,9 +50,6 @@ function LoginForm() {
     };
     const validate = () => {
         const errors = validator(data, validatorConfig);
-        /* validateSchema.validate(data)
-            .then(() => setErrors({}))
-            .catch((err) => setErrors({ [err.path]: err.message })); */
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
