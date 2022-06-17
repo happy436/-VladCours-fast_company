@@ -32,7 +32,7 @@ const UserProvider = ({ children }) => {
         }
     }
     function errorCather(error) {
-        const { message } = error.response.data;
+        const { message } = error;
         setError(message);
     }
     return (

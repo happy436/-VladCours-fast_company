@@ -4,7 +4,7 @@ import { useQualities } from "../../hooks/useQuality";
 
 const QualitiesList = ({ qualities }) => {
     const { isLoading, getQuality } = useQualities();
-    const qual = getQuality(qualities);
+    const qual = qualities ? getQuality(qualities) : [];
     if (!isLoading) {
         return <ul className="card-text">
             {qual.map((qual) => {

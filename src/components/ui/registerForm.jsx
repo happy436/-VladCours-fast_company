@@ -16,9 +16,9 @@ function RegisterForm() {
         email: "",
         password: "",
         name: "",
+        qualities: [],
         profession: "",
         sex: "male",
-        qualities: [],
         licence: false
     });
     const { signUp } = useAuth();
@@ -97,6 +97,7 @@ function RegisterForm() {
             history.push("/");
         } catch (error) {
             setErrors(error);
+            console.log(error);
         }
     };
 

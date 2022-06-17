@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
     }
     async function signUp({ email, password, ...rest }) {
         try {
-            const { data } = await httpAuth.post(`accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`,
+            const { data } = await httpAuth.post(`accounts:signUp`,
                 {
                     email,
                     password,
@@ -66,11 +66,13 @@ const AuthProvider = ({ children }) => {
                     email,
                     rate: randomInt(1, 5),
                     completedMeetings: randomInt(0, 200),
+                    qualities: [],
                     ...rest
                 }
             );
         } catch (error) {
             errorCather(error);
+            console.log(error);
             const { code, message } = error.response.data.error;
             if (code === 400) {
                 if (message === "EMAIL_EXISTS") {

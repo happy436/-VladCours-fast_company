@@ -35,19 +35,19 @@ export const QualityProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
-    function getQuality(listId) {
-        return listId.map(item => {
-            return qualities.find(q => q._id === item);
-        });
+    function getQuality(listId = []) {
+        if (listId.length > 0) {
+            return listId.map((item) => {
+                return qualities.find((q) => q._id === item);
+            });
+        }
         /* return (qualities.find((p) => {
             console.log(id);
             return (p._id === id);
         })); */
     }
     return (
-        <QualityContext.Provider
-            value={{ isLoading, qualities, getQuality }}
-        >
+        <QualityContext.Provider value={{ isLoading, qualities, getQuality }}>
             {!isLoading ? children : <h1>Loading...</h1>}
         </QualityContext.Provider>
     );
