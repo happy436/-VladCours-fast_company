@@ -15,6 +15,7 @@ function RegisterForm() {
     const [data, setData] = useState({
         email: "",
         password: "",
+        name: "",
         profession: "",
         sex: "male",
         qualities: [],
@@ -40,6 +41,15 @@ function RegisterForm() {
             },
             isEmail: {
                 message: "Email введет не корректно"
+            }
+        },
+        name: {
+            isRequired: {
+                message: "Обязательно для заполнения"
+            },
+            minLength: {
+                message: "Имя должно состоять минимум из 2 символов",
+                value: 2
             }
         },
         password: {
@@ -92,6 +102,13 @@ function RegisterForm() {
 
     return (
         <form onSubmit={handleSubmit}>
+            <TextField
+                name="name"
+                label="Имя"
+                onChange={handeChange}
+                value={data.name}
+                error={errors.name}
+            />
             <TextField
                 name="email"
                 label="Email"

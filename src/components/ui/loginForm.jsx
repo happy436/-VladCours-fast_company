@@ -4,11 +4,11 @@ import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
 import TextField from "../common/form/textField";
 /* import * as yup from "yup"; */
-import { useLogin } from "./../../hooks/useLogin";
+import { useAuth } from "./../../hooks/useAuth";
 
 function LoginForm() {
     const history = useHistory();
-    const { signIn } = useLogin();
+    const { signIn } = useAuth();
     const [data, setData] = useState({ email: "", password: "", stayOn: false });
     const [errors, setErrors] = useState({});
     const handeChange = (target) => {

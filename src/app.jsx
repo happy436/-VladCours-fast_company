@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualityProvider } from "./hooks/useQuality";
 import AuthProvider from "./hooks/useAuth";
-import LoginProvider from "./hooks/useLogin";
 
 const App = () => {
     return (
@@ -21,23 +20,21 @@ const App = () => {
                     <ProfessionProvider>
                         <QualityProvider>
                             <Switch>
-                                <LoginProvider>
-                                    <Route
-                                        path="/users/:UserId?/edit"
-                                        component={EditPage}
-                                    />
-                                    <Route
-                                        path="/users/:UserId?"
-                                        component={Users}
-                                    />
-                                    <Route
-                                        path="/login/:type?"
-                                        component={Login}
-                                    />
+                                <Route
+                                    path="/users/:UserId?/edit"
+                                    component={EditPage}
+                                />
+                                <Route
+                                    path="/users/:UserId?"
+                                    component={Users}
+                                />
+                                <Route
+                                    path="/login/:type?"
+                                    component={Login}
+                                />
 
-                                    <Route path="/" exact component={Main} />
-                                    <Redirect to="/" />
-                                </LoginProvider>
+                                <Route path="/" exact component={Main} />
+                                <Redirect to="/" />
                             </Switch>
                         </QualityProvider>
                     </ProfessionProvider>
