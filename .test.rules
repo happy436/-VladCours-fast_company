@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "user": {
+      ".read": "auth !=null",
+      "$uid": {
+          ".write": "$uid === auth.uid"
+        }
+    },
+    "quality":{
+      ".read":true,
+      ".write":false
+    },
+    "profession":{
+      ".read":true,
+      ".write":false
+    }
+  }
+}
