@@ -16,7 +16,7 @@ export function displayDate(data) {
                 }
                 return "30 минут назад";
             }
-            return `${date.getHours()}:${date.getMinutes()}`;
+            return `${String(date.getHours()).padStart(2, 0)}:${String(date.getMinutes()).padStart(2, 0)}`;
         }
 
         return `${date.getDate()} ${date.toLocaleString("default", {
