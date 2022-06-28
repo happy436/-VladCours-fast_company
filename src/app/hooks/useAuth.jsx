@@ -55,13 +55,6 @@ const AuthProvider = ({ children }) => {
             }
         }
     }
-    function updateUserData(newData) {
-        try {
-            userService.create(newData);
-        } catch (error) {
-            errorCatcher(error);
-        }
-    }
     function logOut() {
         localStorageService.removeAuthData();
         setUser(null);
@@ -69,6 +62,14 @@ const AuthProvider = ({ children }) => {
     }
     function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    async function updateUserData(data) {
+        try {
+            const { content } = await userService.update(data);
+            setUser(content);
+        } catch (error) {
+            errorCatcher(error);
+        }
     }
     async function signUp({ email, password, ...rest }) {
         try {

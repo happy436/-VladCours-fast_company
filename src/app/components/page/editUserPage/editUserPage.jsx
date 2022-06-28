@@ -6,57 +6,76 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import BackHistoryButton from "../../common/backButton";
-import { useProfessions } from "../../../hooks/useProfession";
-import { useQualities } from "./../../../hooks/useQualities";
 import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { getProfessions, getProfessionsLoadingStatus } from "./../../../store/professions";
+import {
+    getQualities,
+    getQualitiesLoadingStatus
+} from "../../../store/qualities";
 
 const EditUserPage = () => {
-    const { updateUserData, currentUser } = useAuth();
     const history = useHistory();
-    useEffect(() => {
-        const regExp = /\/users\/([\s\S]+?)\//g;
-        if (regExp.exec(history.location.pathname) !== currentUser._id) {
-            history.replace(`/users/${currentUser._id}/edit`);
-        }
-    }, []);
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState({
-        name: "",
-        email: "",
-        profession: "",
-        sex: "male",
-        qualities: []
-    });
-    const { professions } = useProfessions();
-    const [professionsList, setProfessionList] = useState([]);
-    const { qualities, getQuality } = useQualities();
-    const [qualitiesList, setQualitiesList] = useState([]);
+    const [data, setData] = useState();
+    const { currentUser, updateUserData } = useAuth();
+    const qualities = useSelector(getQualities());
+    const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
+    const qualitiesList = qualities.map((q) => ({
+        label: q.name,
+        value: q._id
+    }));
+    const professions = useSelector(getProfessions());
+    const professionLoading = useSelector(getProfessionsLoadingStatus());
+    const professionsList = professions.map((p) => ({
+        label: p.name,
+        value: p._id
+    }));
     const [errors, setErrors] = useState({});
-    const handleSubmit = (e) => {
+    console.log(currentUser);
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        const { qualities } = data;
-        updateUserData({ ...data, qualities: qualities.map((q) => q.value) });
-        history.push(`/users/${data._id}`);
+        await updateUserData({
+            ...data,
+            qualities: data.qualities.map((q) => q.value)
+        });
+
+        history.push(`/users/${currentUser._id}`);
     };
-    function transformData(newData) {
-        return newData.map((qual) => ({ label: qual.name, value: qual._id }));
+    function getQualitiesListByIds(qualitiesIds) {
+        const qualitiesArray = [];
+        for (const qualId of qualitiesIds) {
+            for (const quality of qualities) {
+                if (quality._id === qualId) {
+                    qualitiesArray.push(quality);
+                    break;
+                }
+            }
+        }
+        return qualitiesArray;
     }
-    useEffect(() => {
-        setIsLoading(true);
-        const qual = currentUser.qualities.map((item) => getQuality(item));
-        setData(() => ({
-            ...currentUser,
-            qualities: transformData(qual)
+    const transformData = (data) => {
+        const result = getQualitiesListByIds(data).map((qual) => ({
+            label: qual.name,
+            value: qual._id
         }));
-        setProfessionList(transformData(professions));
-        setQualitiesList(transformData(qualities));
-        setIsLoading(false);
-    }, []);
-    /* useEffect(() => {
-        if (data._id) setIsLoading(false);
-    }, [data]); */
+        return result;
+    };
+    useEffect(() => {
+        if (!professionLoading && !qualitiesLoading && currentUser && !data) {
+            setData({
+                ...currentUser,
+                qualities: transformData(currentUser.qualities)
+            });
+        }
+    }, [professionLoading, qualitiesLoading, currentUser, data]);
+    useEffect(() => {
+        if (data && isLoading) {
+            setIsLoading(false);
+        }
+    }, [data]);
 
     const validatorConfig = {
         email: {
