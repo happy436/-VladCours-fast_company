@@ -8,9 +8,14 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import BackHistoryButton from "../../common/backButton";
 import { useAuth } from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
-import { getProfessions, getProfessionsLoadingStatus } from "./../../../store/professions";
+import {
+    getProfessions,
+    getProfessionsLoadingStatus
+} from "./../../../store/professions";
+import { getCurrentUserData } from "./../../../store/users";
 import {
     getQualities,
+    getQualitiesByIds,
     getQualitiesLoadingStatus
 } from "../../../store/qualities";
 
@@ -18,7 +23,8 @@ const EditUserPage = () => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState();
-    const { currentUser, updateUserData } = useAuth();
+    const { updateUserData } = useAuth();
+    const currentUser = useSelector(getCurrentUserData());
     const qualities = useSelector(getQualities());
     const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
     const qualitiesList = qualities.map((q) => ({
@@ -44,20 +50,13 @@ const EditUserPage = () => {
 
         history.push(`/users/${currentUser._id}`);
     };
-    function getQualitiesListByIds(qualitiesIds) {
-        const qualitiesArray = [];
-        for (const qualId of qualitiesIds) {
-            for (const quality of qualities) {
-                if (quality._id === qualId) {
-                    qualitiesArray.push(quality);
-                    break;
-                }
-            }
-        }
-        return qualitiesArray;
-    }
+
+    const getQualitiesListByIds = useSelector(
+        getQualitiesByIds(currentUser.qualities)
+    );
+
     const transformData = (data) => {
-        const result = getQualitiesListByIds(data).map((qual) => ({
+        const result = data.map((qual) => ({
             label: qual.name,
             value: qual._id
         }));
@@ -67,7 +66,7 @@ const EditUserPage = () => {
         if (!professionLoading && !qualitiesLoading && currentUser && !data) {
             setData({
                 ...currentUser,
-                qualities: transformData(currentUser.qualities)
+                qualities: transformData(getQualitiesListByIds)
             });
         }
     }, [professionLoading, qualitiesLoading, currentUser, data]);
